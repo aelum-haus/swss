@@ -9,7 +9,7 @@
   "devDependencies": {
     "vite": "latest",
     "@vitejs/plugin-react": "latest",
-    "tailwindcss": "latest",
+    "tailwindcss": "^3.4.1",
     "postcss": "latest",
     "autoprefixer": "latest"
   },

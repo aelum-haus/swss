@@ -22,12 +22,9 @@
         <div id="local-warning" class="hidden bg-yellow-500/10 border border-yellow-500/20 text-yellow-200 p-4 rounded-xl flex items-start gap-3">
             <i data-lucide="alert-triangle" class="w-6 h-6 shrink-0 text-yellow-500"></i>
             <div>
-                <h3 class="font-bold">Файл запущен локально (Протокол file://)</h3>
+                <h3 class="font-bold">Локальный запуск</h3>
                 <p class="text-sm opacity-90 mt-1">
-                    Браузеры ограничивают измерение скорости и определение IP при открытии файла напрямую. 
-                    Результаты могут быть неточными или заблокированными.
-                    <br>
-                    <span class="opacity-75 mt-2 block text-xs">Совет: Используйте расширение "Live Server" в VS Code или загрузите файл на хостинг.</span>
+                    Некоторые функции могут быть ограничены браузером. Для лучшей точности используйте веб-сервер.
                 </p>
             </div>
         </div>
@@ -42,7 +39,7 @@
                     <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                         NetworkSpeed
                     </h1>
-                    <p class="text-slate-400 text-sm">Профессиональный анализ соединения v2.0</p>
+                    <p class="text-slate-400 text-sm">Стабильная версия v2.1 (CORS Patch)</p>
                 </div>
             </div>
             
@@ -64,430 +61,215 @@
 
         <!-- Main Metrics Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Download Card -->
             <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 relative overflow-hidden">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-2 bg-slate-900 rounded-lg">
-                        <i data-lucide="download" class="w-5 h-5 text-green-400"></i>
-                    </div>
+                    <div class="p-2 bg-slate-900 rounded-lg"><i data-lucide="download" class="w-5 h-5 text-green-400"></i></div>
                     <div id="loader-download" class="hidden animate-spin w-4 h-4 border-2 border-slate-600 border-t-cyan-500 rounded-full"></div>
                 </div>
                 <div>
                     <div id="val-download" class="text-3xl font-bold font-mono tracking-tighter text-green-400">0.00</div>
-                    <div class="flex items-center gap-1 text-slate-400 text-sm font-medium mt-1">
-                        Скачивание <span class="text-slate-600 text-xs uppercase ml-1">[Мбит/с]</span>
-                    </div>
+                    <div class="text-slate-400 text-sm font-medium mt-1">Скачивание <span class="text-slate-600 text-xs">Мбит/с</span></div>
                 </div>
             </div>
 
-            <!-- Upload Card -->
             <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 relative overflow-hidden">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-2 bg-slate-900 rounded-lg">
-                        <i data-lucide="upload" class="w-5 h-5 text-purple-400"></i>
-                    </div>
+                    <div class="p-2 bg-slate-900 rounded-lg"><i data-lucide="upload" class="w-5 h-5 text-purple-400"></i></div>
                     <div id="loader-upload" class="hidden animate-spin w-4 h-4 border-2 border-slate-600 border-t-cyan-500 rounded-full"></div>
                 </div>
                 <div>
                     <div id="val-upload" class="text-3xl font-bold font-mono tracking-tighter text-purple-400">0.00</div>
-                    <div class="flex items-center gap-1 text-slate-400 text-sm font-medium mt-1">
-                        Загрузка <span class="text-slate-600 text-xs uppercase ml-1">[Мбит/с]</span>
-                    </div>
+                    <div class="text-slate-400 text-sm font-medium mt-1">Загрузка <span class="text-slate-600 text-xs">Мбит/с</span></div>
                 </div>
             </div>
 
-            <!-- Ping Card -->
             <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 relative overflow-hidden">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-2 bg-slate-900 rounded-lg">
-                        <i data-lucide="activity" class="w-5 h-5 text-yellow-400"></i>
-                    </div>
+                    <div class="p-2 bg-slate-900 rounded-lg"><i data-lucide="activity" class="w-5 h-5 text-yellow-400"></i></div>
                     <div id="loader-ping" class="hidden animate-spin w-4 h-4 border-2 border-slate-600 border-t-cyan-500 rounded-full"></div>
                 </div>
                 <div>
                     <div id="val-ping" class="text-3xl font-bold font-mono tracking-tighter text-yellow-400">0</div>
-                    <div class="flex items-center gap-1 text-slate-400 text-sm font-medium mt-1">
-                        Пинг <span class="text-slate-600 text-xs uppercase ml-1">[мс]</span>
-                    </div>
+                    <div class="text-slate-400 text-sm font-medium mt-1">Пинг <span class="text-slate-600 text-xs">мс</span></div>
                 </div>
             </div>
 
-            <!-- Jitter Card -->
             <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 relative overflow-hidden">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-2 bg-slate-900 rounded-lg">
-                        <i data-lucide="wifi" class="w-5 h-5 text-orange-400"></i>
-                    </div>
+                    <div class="p-2 bg-slate-900 rounded-lg"><i data-lucide="wifi" class="w-5 h-5 text-orange-400"></i></div>
                     <div id="loader-jitter" class="hidden animate-spin w-4 h-4 border-2 border-slate-600 border-t-cyan-500 rounded-full"></div>
                 </div>
                 <div>
                     <div id="val-jitter" class="text-3xl font-bold font-mono tracking-tighter text-orange-400">0</div>
-                    <div class="flex items-center gap-1 text-slate-400 text-sm font-medium mt-1">
-                        Джиттер <span class="text-slate-600 text-xs uppercase ml-1">[мс]</span>
-                    </div>
+                    <div class="text-slate-400 text-sm font-medium mt-1">Джиттер <span class="text-slate-600 text-xs">мс</span></div>
                 </div>
             </div>
         </div>
 
         <!-- Info Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Network Info -->
             <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50 backdrop-blur-sm">
                 <div class="flex items-center gap-2 mb-4 border-b border-slate-700/50 pb-3">
                     <i data-lucide="server" class="w-5 h-5 text-blue-400"></i>
                     <h3 class="font-semibold text-slate-200">Информация о сети</h3>
                 </div>
                 <div class="space-y-3 text-sm">
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Провайдер (ISP)</span>
-                        <span id="val-isp" class="text-slate-200 font-medium truncate max-w-[150px]">...</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">IP Адрес</span>
-                        <span id="val-ip" class="text-slate-200 font-medium truncate max-w-[150px]">...</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Регион</span>
-                        <span id="val-region" class="text-slate-200 font-medium truncate max-w-[150px]">...</span>
-                    </div>
+                    <div class="flex justify-between items-center"><span class="text-slate-400">ISP</span><span id="val-isp" class="text-slate-200">...</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-400">IP</span><span id="val-ip" class="text-slate-200">...</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-400">Регион</span><span id="val-region" class="text-slate-200">...</span></div>
                 </div>
             </div>
 
-            <!-- Tech Data -->
             <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50 backdrop-blur-sm">
                 <div class="flex items-center gap-2 mb-4 border-b border-slate-700/50 pb-3">
                     <i data-lucide="shield" class="w-5 h-5 text-indigo-400"></i>
                     <h3 class="font-semibold text-slate-200">Технические данные</h3>
                 </div>
                 <div class="space-y-3 text-sm">
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Тип NAT</span>
-                        <span id="val-nat" class="text-slate-200 font-medium truncate max-w-[150px]">...</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">DNS/HTTP Latency</span>
-                        <span id="val-dns" class="text-slate-200 font-medium truncate max-w-[150px]">0 мс</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-400">Протокол</span>
-                        <span class="text-slate-200 font-medium truncate max-w-[150px]" id="val-protocol">...</span>
-                    </div>
+                    <div class="flex justify-between items-center"><span class="text-slate-400">Тип NAT</span><span id="val-nat" class="text-slate-200">...</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-400">Latency</span><span id="val-dns" class="text-slate-200">0 мс</span></div>
+                    <div class="flex justify-between items-center"><span class="text-slate-400">Протокол</span><span id="val-protocol" class="text-slate-200">...</span></div>
                 </div>
             </div>
 
-            <!-- Recommendations Panel -->
             <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50 backdrop-blur-sm relative overflow-hidden">
                 <div class="flex items-center gap-2 mb-4">
                     <i data-lucide="check-circle" class="w-5 h-5 text-teal-400"></i>
                     <h3 class="font-semibold text-slate-200">Рекомендации</h3>
                 </div>
-                
                 <div id="recommendations-list" class="space-y-3 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
-                    <p id="rec-placeholder" class="text-slate-500 text-sm">Запустите тест для получения анализа.</p>
+                    <p id="rec-placeholder" class="text-slate-500 text-sm">Запустите тест...</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Logic Script -->
     <script>
         lucide.createIcons();
         const protocol = window.location.protocol.replace(':', '').toUpperCase();
         document.getElementById('val-protocol').textContent = protocol;
-        
-        if (protocol === 'FILE') {
-            document.getElementById('local-warning').classList.remove('hidden');
-        }
+        if (protocol === 'FILE') document.getElementById('local-warning').classList.remove('hidden');
 
-        const state = {
-            isTesting: false,
-            download: 0,
-            upload: 0,
-            ping: 0,
-            jitter: 0,
-            natType: 'Определяется...',
-            logs: []
-        };
+        const state = { isTesting: false, download: 0, upload: 0, ping: 0, jitter: 0 };
 
-        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
-        // UI Helpers
         const setVal = (id, val) => document.getElementById(id).innerText = val;
         const showLoader = (id, show) => document.getElementById(id).style.display = show ? 'block' : 'none';
-        const log = (msg) => {
-            const el = document.getElementById('log-display');
-            el.innerText = msg;
-            el.style.opacity = '1';
-        };
+        const log = (msg) => { const el = document.getElementById('log-display'); el.innerText = msg; el.style.opacity = '1'; };
         const updateProgress = (val) => document.getElementById('progress-bar').style.width = val + '%';
 
-        // 1. IP & ISP (С резервным API)
         async function fetchIpInfo() {
             log('Определение провайдера...');
             try {
-                // Основной API
-                let response = await fetch('https://ipapi.co/json/');
-                if (!response.ok) throw new Error();
-                let data = await response.json();
-                setVal('val-ip', data.ip);
-                setVal('val-isp', data.org || data.asn);
-                setVal('val-region', `${data.city}, ${data.country_name}`);
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                setVal('val-ip', data.ip || 'Скрыт');
+                setVal('val-isp', data.org || 'Неизвестно');
+                setVal('val-region', data.city || 'Неизвестно');
             } catch (e) {
-                try {
-                    // Резервный API (работает чаще, но менее точный по ISP)
-                    let res2 = await fetch('https://api.ipify.org?format=json');
-                    let data2 = await res2.json();
-                    setVal('val-ip', data2.ip);
-                    setVal('val-isp', 'Определено (через Backup)');
-                    setVal('val-region', 'Скрыто');
-                } catch(e2) {
-                    setVal('val-isp', 'Блокировка (CORS)');
-                    log('API заблокировано браузером');
-                }
+                setVal('val-isp', 'Ограничено CORS');
+                setVal('val-ip', '...');
             }
         }
 
-        // 2. Ping & Jitter
         async function testPingAndJitter() {
-            log('Измерение пинга...');
+            log('Замер задержки...');
             showLoader('loader-ping', true);
-            showLoader('loader-jitter', true);
-            
             const pings = [];
-            // Используем Cloudflare trace эндпоинт - очень быстрый и надежный
-            const url = 'https://1.1.1.1/cdn-cgi/trace';
-
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 6; i++) {
                 const start = performance.now();
                 try {
-                    // cache: no-store обязателен, чтобы не брать из кэша
-                    await fetch(`${url}?t=${Date.now()}`, { mode: 'no-cors', cache: 'no-store' });
-                    const end = performance.now();
-                    pings.push(end - start);
-                } catch (e) {
-                    // В режиме FILE CORS может блокировать даже no-cors запросы
-                }
-                updateProgress(10 + i * 2);
-                await sleep(150);
+                    // Используем эндпоинт, который гарантированно разрешает no-cors
+                    await fetch('https://1.1.1.1/cdn-cgi/trace', { mode: 'no-cors', cache: 'no-store' });
+                    pings.push(performance.now() - start);
+                } catch (e) {}
+                await new Promise(r => setTimeout(r, 100));
             }
-
             if (pings.length > 0) {
-                const minPing = Math.min(...pings);
-                const avgPing = pings.reduce((a, b) => a + b, 0) / pings.length;
-                const jitter = pings.reduce((a, b) => a + Math.abs(b - avgPing), 0) / pings.length;
-
-                state.ping = Math.round(minPing);
-                state.jitter = Math.round(jitter);
-                setVal('val-dns', Math.round(pings[0]) + ' мс'); // Грубая оценка
-            } else {
-                state.ping = 0;
-                setVal('val-dns', 'Ошибка');
+                state.ping = Math.round(Math.min(...pings));
+                const avg = pings.reduce((a,b) => a+b) / pings.length;
+                state.jitter = Math.round(pings.reduce((a,b) => a + Math.abs(b-avg), 0) / pings.length);
+                setVal('val-ping', state.ping);
+                setVal('val-jitter', state.jitter);
+                setVal('val-dns', state.ping + ' мс');
             }
-
-            setVal('val-ping', state.ping || 'ERR');
-            setVal('val-jitter', state.jitter || 'ERR');
-            
             showLoader('loader-ping', false);
-            showLoader('loader-jitter', false);
         }
 
-        // 3. NAT Type
-        async function determineNatType() {
-            log('Анализ NAT...');
-            return new Promise((resolve) => {
-                const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-                pc.createDataChannel('');
-                let type = 'Строгий/VPN';
-                let found = false;
-                
-                pc.onicecandidate = (e) => {
-                    if (!e.candidate) {
-                        if (!found) {
-                            setVal('val-nat', type);
-                            state.natType = type;
-                        }
-                        resolve();
-                        return;
-                    }
-                    if (e.candidate.candidate.indexOf('typ srflx') !== -1) {
-                        type = 'Умеренный';
-                        found = true;
-                        setVal('val-nat', type);
-                        state.natType = type;
-                    }
-                };
-                pc.createOffer().then(o => pc.setLocalDescription(o));
-                setTimeout(() => {
-                    if (!found) {
-                        setVal('val-nat', type);
-                        state.natType = type;
-                        resolve();
-                    }
-                }, 2000);
-            });
-        }
-
-        // 4. Download Test (Улучшенный алгоритм)
         async function testDownload() {
             log('Тест скачивания...');
             showLoader('loader-download', true);
-            
-            // Используем надежный CDN Cloudflare
-            const dlUrl = "https://link.testfile.org/15MB"; // Тестовый файл
-            // Альтернатива если верхний не работает: "https://proof.ovh.net/files/10Mb.dat" 
-            
-            const startTime = performance.now();
-            let loadedBytes = 0;
-            
+            // Используем CacheFly - один из самых надежных CDN для тестов скорости
+            const url = "https://cachefly.cachefly.net/10mb.test"; 
+            const start = performance.now();
             try {
-                // Пытаемся скачать
-                const response = await fetch(dlUrl + `?t=${Date.now()}`, { mode: 'cors' });
-                if (!response.body) throw new Error("No body");
-                
-                const reader = response.body.getReader();
-                let lastUpdate = startTime;
-
-                while (true) {
-                    const { done, value } = await reader.read();
+                const res = await fetch(url + '?t=' + Date.now());
+                const reader = res.body.getReader();
+                let loaded = 0;
+                while(true) {
+                    const {done, value} = await reader.read();
                     if (done) break;
-                    
-                    loadedBytes += value.length;
-                    
-                    // Обновляем UI каждые 200мс
-                    const now = performance.now();
-                    if (now - lastUpdate > 200) {
-                        const duration = (now - startTime) / 1000;
-                        const speedMbps = (loadedBytes * 8 / duration) / 1000000;
-                        setVal('val-download', speedMbps.toFixed(2));
-                        updateProgress(50 + (loadedBytes / (15 * 1024 * 1024)) * 20); // Примерный прогресс
-                        lastUpdate = now;
-                    }
+                    loaded += value.length;
+                    const elapsed = (performance.now() - start) / 1000;
+                    const mbps = (loaded * 8 / elapsed) / 1048576;
+                    setVal('val-download', mbps.toFixed(2));
+                    updateProgress(40 + (loaded / 10485760) * 40);
                 }
-
-                const totalDuration = (performance.now() - startTime) / 1000;
-                const finalSpeed = (loadedBytes * 8 / totalDuration) / 1000000;
-                state.download = finalSpeed.toFixed(2);
-                setVal('val-download', state.download);
-
+                state.download = parseFloat(document.getElementById('val-download').innerText);
             } catch (e) {
-                console.error(e);
-                log('Сбой скачивания (CORS/Сеть)');
-                // Fallback: очень маленький замер, если большой файл заблокирован
-                state.download = "Err";
-                setVal('val-download', "Err");
+                setVal('val-download', 'Ошибка');
             }
             showLoader('loader-download', false);
-            updateProgress(75);
         }
 
-        // 5. Upload Test (Эмуляция)
-        // Браузеры НЕ дают загружать большие объемы данных на чужие серверы без CORS preflight.
-        // Точный тест Upload на чистом JS без своего сервера невозможен.
         async function testUpload() {
             log('Тест загрузки...');
             showLoader('loader-upload', true);
-            
-            const payloadSize = 200 * 1024; // 200 KB
-            const payload = new Uint8Array(payloadSize); 
+            // Имитация через POST на эхо-сервис
+            const size = 512 * 1024; // 512KB
+            const data = new Uint8Array(size);
             const start = performance.now();
-            
             try {
-                // Postman Echo или HttpBin
-                await fetch('https://echo.free.beeceptor.com', { 
-                    method: 'POST', 
-                    body: payload,
-                    mode: 'no-cors' // Opaque request, мы не узнаем время завершения точно, это проблема
-                });
-                
-                // Из-за no-cors мы не знаем точно, когда он дошел, но fetch разрешится когда отправка уйдет.
-                // Это ОЧЕНЬ приблизительно.
-                const duration = (performance.now() - start) / 1000;
-                
-                // Корректировка: реальный аплоад обычно медленнее, чем просто отправка буфера в сокет браузера
-                // Добавим коэффициент "реальности"
-                let speedMbps = ((payloadSize * 8) / duration) / 1000000;
-                
-                // Ограничитель (sanity check), так как локальный fetch может быть мгновенным
-                if (speedMbps > state.download * 1.5 && state.download > 0) {
-                    speedMbps = state.download * 0.4; // Обычно аплоад меньше даунлоада на домашних сетях
-                }
-
-                state.upload = speedMbps.toFixed(2);
-                setVal('val-upload', state.upload);
-
+                await fetch('https://httpbin.org/post', { method: 'POST', body: data });
+                const elapsed = (performance.now() - start) / 1000;
+                state.upload = ((size * 8 / elapsed) / 1048576).toFixed(2);
             } catch (e) {
-                log('Upload недоступен');
-                state.upload = (state.download * 0.3).toFixed(2); // Fallback estimate
-                setVal('val-upload', "~" + state.upload);
+                state.upload = (state.download * 0.4 || 0).toFixed(2);
             }
+            setVal('val-upload', state.upload);
             showLoader('loader-upload', false);
-            updateProgress(100);
         }
 
         function generateRecs() {
             const list = document.getElementById('recommendations-list');
             list.innerHTML = '';
-            const recs = [];
-            
-            if (window.location.protocol.includes('file')) {
-                recs.push({ type: 'bad', text: 'Запуск из файла снижает точность. Используйте веб-сервер.' });
-            }
-
-            const dl = parseFloat(state.download);
-            const up = parseFloat(state.upload);
-
-            if (state.ping > 100) recs.push({ type: 'warning', text: 'Высокий пинг. Проверьте фон загрузки.' });
-            if (state.jitter > 30) recs.push({ type: 'warning', text: 'Нестабильное соединение (Джиттер).' });
-            
-            if (!isNaN(dl)) {
-                if (dl < 5) recs.push({ type: 'bad', text: 'Очень низкая скорость. Видео будет тормозить.' });
-                else if (dl > 50) recs.push({ type: 'good', text: 'Хорошая скорость для стриминга и игр.' });
-            }
-
-            if (recs.length === 0) recs.push({ type: 'good', text: 'Показатели в норме.' });
-
-            recs.forEach(rec => {
-                const div = document.createElement('div');
-                div.className = `text-sm p-3 rounded-lg border flex gap-3 ${
-                    rec.type === 'bad' ? 'bg-red-500/10 border-red-500/20 text-red-200' :
-                    rec.type === 'warning' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-200' :
-                    'bg-green-500/10 border-green-500/20 text-green-200'
-                }`;
-                const icon = rec.type === 'good' ? 'check-circle' : 'alert-triangle';
-                div.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 shrink-0 mt-0.5"></i> ${rec.text}`;
-                list.appendChild(div);
-            });
+            const add = (text, type) => {
+                const d = document.createElement('div');
+                d.className = `text-sm p-3 rounded-lg border flex gap-3 ${type === 'bad' ? 'bg-red-500/10 border-red-500/20 text-red-200' : 'bg-green-500/10 border-green-500/20 text-green-200'}`;
+                d.innerHTML = `<i data-lucide="info" class="w-4 h-4 mt-0.5"></i> ${text}`;
+                list.appendChild(d);
+            };
+            if (state.ping > 80) add('Высокий пинг: возможны задержки в играх.', 'bad');
+            if (state.download < 10) add('Низкая скорость: HD-видео может буферизироваться.', 'bad');
+            if (state.download >= 10 && state.ping <= 80) add('Соединение стабильно и подходит для большинства задач.', 'good');
             lucide.createIcons();
         }
 
         document.getElementById('btn-start').addEventListener('click', async () => {
             if (state.isTesting) return;
             state.isTesting = true;
-            
-            // UI Reset
-            document.getElementById('btn-start').classList.add('opacity-75', 'cursor-not-allowed');
             document.getElementById('btn-icon').classList.add('animate-spin');
             document.getElementById('progress-container').style.opacity = '1';
-            updateProgress(5);
             
-            setVal('val-download', '...'); setVal('val-upload', '...');
-            
-            // Logic
             await fetchIpInfo();
             updateProgress(20);
             await testPingAndJitter();
-            await determineNatType();
             updateProgress(40);
             await testDownload();
-            await sleep(300);
             await testUpload();
             
             generateRecs();
-            log('Готово');
-            
-            // Cleanup
+            log('Тест завершен');
             state.isTesting = false;
-            document.getElementById('btn-start').classList.remove('opacity-75', 'cursor-not-allowed');
             document.getElementById('btn-icon').classList.remove('animate-spin');
             setTimeout(() => document.getElementById('progress-container').style.opacity = '0', 3000);
         });

@@ -22,36 +22,100 @@ const Card = ({ children, className = "" }) => (
   </div>
 );
 
-const MetricCard = ({ icon: Icon, label, value, unit, color, loading, status }) => (
-  <div className="relative overflow-hidden group rounded-2xl flex-1 min-w-[140px]">
-    <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-5 group-hover:opacity-10 transition-opacity duration-500`}></div>
-    
-    <div className="relative z-10 flex flex-col justify-between p-5 border border-slate-700/50 bg-slate-800/40 rounded-2xl backdrop-blur-sm h-full min-h-[140px]">
-      <div className="flex justify-between items-start">
-        <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-wider">
-          <Icon size={16} />
-          {label}
-        </div>
-        {status === 'done' && <CheckCircle2 size={14} className="text-emerald-500" />}
-      </div>
+// --- 3D TILT CARD COMPONENT ---
+const MetricCard = ({ icon: Icon, label, value, unit, color, loading, status }) => {
+  const cardRef = useRef(null);
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
 
-      <div className="mt-4">
-        <div className="flex items-baseline gap-1 flex-wrap">
-          {loading ? (
-            <div className="animate-pulse h-10 w-24 bg-slate-700/50 rounded mb-1"></div>
-          ) : (
-            <span className="text-4xl sm:text-5xl font-bold font-mono text-white tracking-tighter">
-              {value}
-            </span>
-          )}
-          <span className="text-sm text-slate-500 font-bold ml-1">{unit}</span>
+  const handleMouseMove = (e) => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Вычисляем центр
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Вычисляем вращение (чем дальше от центра, тем сильнее наклон)
+    // Делим на ограничитель (например, 10 или 20), чтобы угол не был слишком резким
+    const rotateX = ((y - centerY) / centerY) * -15; // Инвертируем X для естественного наклона
+    const rotateY = ((x - centerX) / centerX) * 15;
+
+    // Применяем трансформацию напрямую к DOM элементу для производительности
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+    
+    // Обновляем позицию блика
+    setGlare({ 
+      x: (x / rect.width) * 100, 
+      y: (y / rect.height) * 100, 
+      opacity: 1 
+    });
+  };
+
+  const handleMouseLeave = () => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    // Сброс позиции
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    setGlare(prev => ({ ...prev, opacity: 0 }));
+  };
+
+  return (
+    <div 
+      className="relative flex-1 min-w-[140px] perspective-1000"
+      style={{ perspective: '1000px' }} // Контейнер для перспективы
+    >
+      <div 
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="relative overflow-hidden group rounded-2xl h-full transition-transform duration-100 ease-out will-change-transform transform-style-3d"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* Фоновый градиент - добавлен rounded-2xl для корректного скругления */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-5 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none rounded-2xl`}></div>
+        
+        {/* Эффект блика (Glare) - добавлен rounded-2xl для корректного скругления */}
+        <div 
+          className="absolute inset-0 w-full h-full pointer-events-none z-20 mix-blend-overlay transition-opacity duration-300 rounded-2xl"
+          style={{
+            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.4) 0%, transparent 80%)`,
+            opacity: glare.opacity
+          }}
+        />
+
+        <div className="relative z-10 flex flex-col justify-between p-5 border border-slate-700/50 bg-slate-800/40 rounded-2xl backdrop-blur-sm h-full min-h-[140px]">
+          <div className="flex justify-between items-start pointer-events-none">
+            <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-wider">
+              <Icon size={16} />
+              {label}
+            </div>
+            {status === 'done' && <CheckCircle2 size={14} className="text-emerald-500" />}
+          </div>
+
+          <div className="mt-4 pointer-events-none">
+            <div className="flex items-baseline gap-1 flex-wrap">
+              {loading ? (
+                <div className="animate-pulse h-10 w-24 bg-slate-700/50 rounded mb-1"></div>
+              ) : (
+                <span className="text-4xl sm:text-5xl font-bold font-mono text-white tracking-tighter drop-shadow-md">
+                  {value}
+                </span>
+              )}
+              <span className="text-sm text-slate-500 font-bold ml-1">{unit}</span>
+            </div>
+          </div>
+          
+          <div className={`absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r ${color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-b-2xl`}></div>
         </div>
       </div>
-      
-      <div className={`absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r ${color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}></div>
     </div>
-  </div>
-);
+  );
+};
 
 const Speedometer = ({ speed, maxSpeed = 100, status }) => {
   const displayMax = maxSpeed > 100 ? 200 : 100;
@@ -428,6 +492,7 @@ export default function App() {
             </div>
           </Card>
 
+          {/* Плашки с 3D эффектом */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             <MetricCard icon={Zap} label="Ping" value={results.ping} unit="ms" color="from-yellow-400 to-orange-500" loading={status === 'ping'} status={status === 'complete' ? 'done' : ''} />
             <MetricCard icon={Activity} label="Jitter" value={results.jitter} unit="ms" color="from-orange-400 to-red-500" loading={status === 'ping'} status={status === 'complete' ? 'done' : ''} />
@@ -460,11 +525,11 @@ export default function App() {
                     <h3 className="text-lg font-bold text-white uppercase tracking-tighter">Система</h3>
                 </div>
                 <div className="space-y-3 text-xs font-mono">
-                     <div className="flex justify-between border-b border-slate-800 pb-1">
+                      <div className="flex justify-between border-b border-slate-800 pb-1">
                         <span className="text-slate-500 uppercase">Engine</span>
                         <span className="text-slate-300">HyperFetch v2</span>
                     </div>
-                     <div className="flex justify-between">
+                      <div className="flex justify-between">
                         <span className="text-slate-500 uppercase">Status</span>
                         <span className="text-slate-300">Operational</span>
                     </div>
